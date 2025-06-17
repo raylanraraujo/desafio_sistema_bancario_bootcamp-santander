@@ -18,10 +18,15 @@ while True:
     opcao = int(input(menu))
 
     if opcao == 1:
-        deposito = float(input("Digite o valor do depósito: R$ "))
-        saldo += deposito
-        extrato += f"Depósito: \033[32mR${deposito:.2f}\033[m\n"
-        
+        while True:
+            deposito = float(input("Digite o valor do depósito: R$ "))
+            if deposito > 0:
+                saldo += deposito
+                extrato += f"Depósito: \033[32mR${deposito:.2f}\033[m\n"
+                break
+            else:
+                print("\n\033[31mDigite um valor válido.\033[m")
+
     
     elif opcao == 2:
         if numero_saques < 3:
@@ -29,17 +34,20 @@ while True:
             saque = float(input("Digite o valor do saque: R$ "))
         
             if saque > saldo:
-                print("Saldo insuficiente.")
+                print("\n\033[31m[ERRO!] - Saldo insuficiente.\033[m")
             elif saque > limite:
-                print("Valor do saque ultaprassa o limite ")
+                print("\n\033[31m[ERRO!] - Valor do saque ultaprassa o limite.\033[m")
             else:
-                saldo -= saque
-                extrato += f"Saque: \033[31mR${saque:.2f}\033[m\n"
-            numero_saques+=1
+                if saque > 0:
+                    saldo -= saque
+                    extrato += f"Saque: \033[31mR${saque:.2f}\033[m\n"
+                    numero_saques+=1
+                else:
+                    print("\n\033[31mDigite um valor válido.\033[m")
         else:
             print("""
 ----------------------------------
- Limite de saques diário atingio.
+ \033[31mLimite de saques diário atingido.\033[m
 ----------------------------------
 """)
     
@@ -49,7 +57,7 @@ while True:
          EXTRATO         
 -------------------------
         ''')
-        print(extrato)
+        print("Não foram realizadas movimentações." if not extrato else extrato) #
         print(f"\n\nSaldo da conta: R$ {saldo:.2f}")
         print()
         print(f"-"*25)
