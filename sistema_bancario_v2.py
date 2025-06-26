@@ -5,7 +5,7 @@ menu = '''
 [3] - Extrato
 [4] - Cadastrar usuário
 [5] - Criar conta
-[6] - Print usuarios
+[6] - Listar Contas
 
 [0] - Sair
 
