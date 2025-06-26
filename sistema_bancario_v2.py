@@ -10,11 +10,12 @@ menu = '''
 [0] - Sair
 
 >>> '''
+AGENCIA = "0001"
+LIMITE_SAQUES = 3
 saldo = 0
 limite = 500
 extrato = ""
 numero_saques = 0
-LIMITE_SAQUES = 3
 despedida = ('''
 ---------------------------------------------------
   Obrigado por usar nossos serviços. Volte sempre.
@@ -71,14 +72,14 @@ def historico(saldo,/, *, extrato = extrato):
     print()
     print(f"-"*25)
 
-def cadastrar_usuário():
+def cadastrar_usuário(lista_usuarios):
     print('''
 --------------------------
     CADASTRAR USUÁRIO         
 --------------------------
         ''')
-    cpf = int(input("Digite o CPF: "))
-    for usuario in usuarios:
+    cpf = int(input("Digite o CPF (apenas números): "))
+    for usuario in lista_usuarios:
         if usuario["cpf"] == cpf:
             print(f"\033[31m\nO CPF nº {cpf} já cadastrado.\033[m")
             return
@@ -86,28 +87,48 @@ def cadastrar_usuário():
         "cpf" : cpf,
         "nome" : input("Nome: ").strip(),
         "nascimento" : input("Nascimento(dd/mm/aaaa): ").strip(),
-        "endereco" : input("Endereço: ").strip()
+        "endereco" : input("Endereço (logradouro, nº - bairro - cidade/sigla estado): ").strip()
     }   
 
-    usuarios.append(novo_usuario)
+    lista_usuarios.append(novo_usuario)
 
-def criar_conta():
+# essa sugestao usada pelo Guilherme para filtrar usuarios
+# def filtrar_usuario(cpf, usuarios):
+#     usuarios_filtrados = [usuario for usuario in usuarios if usuario["cpf"] == cpf]
+#     return usuarios_filtrados[0] if usuarios_filtrados else None
+
+def criar_conta(agencia, numero_conta, lista_usuarios):
     print('''
 --------------------------
      CRIAR NOVA CONTA         
 --------------------------
         ''')
 
-    nova_conta = int(input(f"Agência: 0001\nConta: {conta}\nUsuário (CPF): "))
+    cpf = int(input(f"Informe o CPF do usuário: "))
 
-    for usuario in usuarios:
-        if usuario["cpf"] == nova_conta:
-            usuario["conta"] = []
-            usuario["conta"].append(nova_conta)
+    #inicializa variavel com valor padrao None 
+    usuario_encontrado = None
+
+    for usuario in lista_usuarios:
+        if usuario["cpf"] == cpf:
             print("Conta vinculada ao usuario")
-        else:
-            print(f"\033[31m\nNão foi localizado usuário com o CPF de nº {nova_conta}.\033[mCaso seja de interesse, cadastre esse usuário")
-    return
+            usuario_encontrado = usuario["nome"]
+            break
+    
+    if usuario_encontrado:
+        return{"agencia": agencia, "numero_conta": numero_conta, "usuario": usuario["nome"]}
+    else:
+        print(f"\033[31m\nNão foi localizado usuário com o CPF de nº {cpf}.\033[m\nCaso seja de interesse, cadastre esse usuário")
+
+def listar_contas(contas):
+    for conta in contas:
+        linha = f'''
+Agência: \t{conta['agencia']}
+C/C:\t\t{conta['numero_conta']}
+Titular:\t{conta['usuario']}
+'''     
+        print("=" * 30)
+        print(linha)
 
 #Começo do programa    
 while True:
@@ -115,17 +136,27 @@ while True:
 
     if opcao == 1:
         saldo, extrato = depositar(saldo, extrato)
+
     elif opcao == 2:
         saldo, extrato, numero_saques = sacar(saldo = saldo, extrato = extrato, limite = limite, numero_saques = numero_saques, limite_saques = LIMITE_SAQUES)
+
     elif opcao == 3:
         print(historico(saldo, extrato = extrato))
+
     elif opcao == 4:
-        cadastrar_usuário()
+        cadastrar_usuário(usuarios)
+
     elif opcao == 5:
-        criar_conta()
+        numero_conta = len(contas) + 1
+        conta = criar_conta(AGENCIA, numero_conta, usuarios)
+
+        if conta:
+            contas.append(conta)
+
     elif opcao == 6:
         print(usuarios)
-        print(contas)
+        listar_contas(contas)
+
     elif opcao == 0:
         break
     else:
