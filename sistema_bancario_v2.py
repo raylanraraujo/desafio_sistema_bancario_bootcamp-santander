@@ -88,7 +88,8 @@ def cadastrar_usuário(lista_usuarios):
         "nome" : input("Nome: ").strip(),
         "nascimento" : input("Nascimento(dd/mm/aaaa): ").strip(),
         "endereco" : input("Endereço (logradouro, nº - bairro - cidade/sigla estado): ").strip()
-    }   
+    }
+    print("\n\033[32mUsuário cadastrado com sucesso.\033[m")
 
     lista_usuarios.append(novo_usuario)
 
