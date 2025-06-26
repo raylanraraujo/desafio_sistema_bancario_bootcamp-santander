@@ -112,7 +112,7 @@ def criar_conta(agencia, numero_conta, lista_usuarios):
 
     for usuario in lista_usuarios:
         if usuario["cpf"] == cpf:
-            print("Conta vinculada ao usuario")
+            print("\n\033[32mConta criada com sucesso.\033[m")
             usuario_encontrado = usuario["nome"]
             break
     
