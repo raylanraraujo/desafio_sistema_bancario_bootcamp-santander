@@ -80,13 +80,35 @@ class Conta:
         return True
 
 
-
 class ContaCorrente(Conta): #tem tudo que a conta mae tem + o limite
-    def __init__(self, limite, limite_saques, **kw):
-        super().__init__(**kw)
-        self._limite = limite
-        self._limite_saques = limite_saques
+    def __init__(self, numero, cliente, limite=500, limite_saques=3):
+        super().__init__(numero, cliente)
+        self.limite = limite
+        self.limite_saques = limite_saques
 
+        def sacar(self, valor):
+            numero_saques = len(
+                [transacao for transacao in self.historico.transacoes if transacao["tipo"] == Saque.__name__]
+            )
+
+            excedeu_limite = valor > self.limite
+            excedeu_saques = numero_saques >= self.limite_saques
+
+            if excedeu_limite:
+                print("\n\033[31m[ERRO!] - Valor do saque ultaprassa o limite.\033[m")
+            
+            elif excedeu_saques:
+                erro = """
+----------------------------------
+ \033[31mLimite de saques diário atingido.\033[m
+----------------------------------
+"""
+                print(erro)
+            
+            else:
+                return super().sacar(valor)
+            
+            return False
 
 class Historico():
     def adicionar_transacao(transacao):
