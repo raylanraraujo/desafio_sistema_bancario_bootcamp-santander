@@ -110,8 +110,15 @@ class ContaCorrente(Conta): #tem tudo que a conta mae tem + o limite
             
             return False
 
+        def __str__(self):
+            return f""""\
+Agência:\t{self.agencia}
+C/C:\t\t{self.numero}
+Titular:\t{self.cliente.nome}
+"""
+
+
 class Historico():
     def adicionar_transacao(transacao):
         pass
 
-#minuto 2:30
