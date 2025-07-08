@@ -134,3 +134,16 @@ class Historico():
                 "data": datetime.now().strtime("%d-%m-%Y  %H:%M:%s")
             }
         )
+
+
+class Transacao(ABC): #criando uma classe abstrata extendiad do ABC
+    @property
+    def valor(self):
+        pass
+
+    @classmethod
+    def regitar(self, conta):
+        pass
+
+
+
