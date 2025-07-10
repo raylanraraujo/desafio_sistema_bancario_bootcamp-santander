@@ -1,3 +1,4 @@
+import textwrap
 from abc import ABC
 from datetime import datetime
 
@@ -74,7 +75,7 @@ class Conta:
 
     def depositar(self, valor): #recebe um valor que é float e retorna um booleano. A intencao do é saber se a oprecao aconteceu com sucesso ou falha. 
         if valor > 0: #verificar se o valor informado é maior que 0
-            self._saldo += saldo
+            self._saldo += valor
             print("\n\033[32mDepósito realizado com sucesso.\033[m")
         else:
             print("\n\033[31mDigite um valor válido.\033[m")
@@ -89,36 +90,36 @@ class ContaCorrente(Conta): #tem tudo que a conta mae tem + o limite
         self.limite = limite
         self.limite_saques = limite_saques
 
-        def sacar(self, valor):
-            numero_saques = len(
-                [transacao for transacao in self.historico.transacoes if transacao["tipo"] == Saque.__name__]
-            )
+    def sacar(self, valor):
+        numero_saques = len(
+            [transacao for transacao in self.historico.transacoes if transacao["tipo"] == Saque.__name__]
+        )
 
-            excedeu_limite = valor > self.limite
-            excedeu_saques = numero_saques >= self.limite_saques
+        excedeu_limite = valor > self.limite
+        excedeu_saques = numero_saques >= self.limite_saques
 
-            if excedeu_limite:
-                print("\n\033[31m[ERRO!] - Valor do saque ultaprassa o limite.\033[m")
-            
-            elif excedeu_saques:
-                erro = """
+        if excedeu_limite:
+            print("\n\033[31m[ERRO!] - Valor do saque ultaprassa o limite.\033[m")
+        
+        elif excedeu_saques:
+            erro = """
 ----------------------------------
- \033[31mLimite de saques diário atingido.\033[m
+\033[31mLimite de saques diário atingido.\033[m
 ----------------------------------
 """
-                print(erro)
-            
-            else:
-                return super().sacar(valor)
-            
-            return False
+            print(erro)
+        
+        else:
+            return super().sacar(valor)
+        
+        return False
 
-        def __str__(self):
-            return f""""\
-Agência:\t{self.agencia}
-C/C:\t\t{self.numero}
-Titular:\t{self.cliente.nome}
-"""
+    def __str__(self):
+        return f"""\
+            Agência:\t{self.agencia}
+            C/C:\t\t{self.numero}
+            Titular:\t{self.cliente.nome}
+        """
 
 
 class Historico():
@@ -134,7 +135,7 @@ class Historico():
             {
                 "tipo": transacao.__class__.__name__,
                 "valor": transacao.valor,
-                "data": datetime.now().strtime("%d-%m-%Y  %H:%M:%s")
+                "data": datetime.now().strftime("%d-%m-%Y  %H:%M:%s")
             }
         )
 
@@ -193,7 +194,7 @@ def menu():
 
 >>> '''
 
-    return int(input(menu))
+    return int(input(textwrap.dedent(menu)))
 
 
 def main():
@@ -299,13 +300,13 @@ def exibir_extrato(clientes):
 
     extrato = ""
     if not transacoes:
-        extrato = "Não fram realizadas movimentações"
+        extrato = "Não foram realizadas movimentações"
     else:
         for transacao in transacoes:
-            extrato += f"\n{transacao['tipo']}:\n\tR$ {transacao['valor']:.2f}"
+            extrato += f"\n{transacao['tipo']}:\n\t\tR$ {transacao['valor']:.2f}"
     
     print(extrato)
-    print(f"\nSaldo: \n\tR$ {conta.sald:.2f}")
+    print(f"\nSaldo: \n\t\ttR$ {conta.saldo:.2f}")
     print()
     print(f"-"*25)
 
@@ -345,7 +346,7 @@ def criar_conta(numero_conta, clientes, contas):
     
     conta = ContaCorrente.nova_conta(cliente=cliente, numero=numero_conta)
     contas.append(conta)
-    clientes.contas.append(conta)
+    cliente.contas.append(conta)
 
 
     print("\033[32mConta criada com sucesso.\033[m")
@@ -354,6 +355,6 @@ def criar_conta(numero_conta, clientes, contas):
 def listar_contas(contas):
     for conta in contas:
         print("=" * 100)
-        print(str(conta))
+        print(textwrap.dedent(str(conta)))
 
 main()
