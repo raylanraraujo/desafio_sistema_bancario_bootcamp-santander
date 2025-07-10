@@ -336,7 +336,7 @@ def criar_cliente(clientes):
 
 
 def criar_conta(numero_conta, clientes, contas):
-    cpf = input("Informe o CPF dop cliente: ")
+    cpf = input("Informe o CPF do cliente: ")
     cliente = filtrar_cliente(cpf, clientes)
 
     if not cliente:
