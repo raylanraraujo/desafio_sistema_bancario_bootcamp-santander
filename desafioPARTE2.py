@@ -22,7 +22,7 @@ class PessoaFisica(Cliente): #classe extendida da classe Cliente
 
 
 class Conta:
-    def __init__(self, numero, cliente, historico):
+    def __init__(self, numero, cliente):
         self._saldo = 0
         self._numero = numero
         self._agencia = "0001"
@@ -217,13 +217,9 @@ def main():
 
         elif opcao == 5:
             numero_conta = len(contas) + 1
-            conta = criar_conta(numero_conta, clientes, contas)
-
-            if conta:
-                contas.append(conta)
+            criar_conta(numero_conta, clientes, contas)
 
         elif opcao == 6:
-            print(usuarios)
             listar_contas(contas)
 
         elif opcao == 0:
@@ -237,7 +233,7 @@ def depositar(clientes):
     cliente = filtrar_cliente(cpf, clientes)
 
     if not cliente:
-        print("\033[31mCliente não encontrado!\033[m")
+        print("\n\033[31mCliente não encontrado!\033[m")
         return
     
     valor = float(input("Informe o valor do depósito: "))
@@ -251,13 +247,13 @@ def depositar(clientes):
 
 
 def filtrar_cliente(cpf, clientes):
-    clientes_filtrados = [cliente for cliente in clientes if cliete.cpf == cpf]
+    clientes_filtrados = [cliente for cliente in clientes if cliente.cpf == cpf]
     return clientes_filtrados[0] if clientes_filtrados else None
 
 
 def recuperar_conta_cliente(cliente):
     if not cliente.contas:
-        print("\033[31mCliente não possui conta!\033[m")
+        print("\n\033[31mCliente não possui conta!\033[m")
         return
 
     #FIXME #não permite cliente escolher a conta
