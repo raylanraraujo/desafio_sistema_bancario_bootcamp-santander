@@ -231,15 +231,16 @@ def main():
         else:
             print("\nOpção inválida! Por favor selecione novamente a opção desejada.")
 
+
 def depositar(clientes):
     cpf = input("Informe o CPF do cliente: ")
-    cliente = filtrar.cliente(cpf, clientes)
+    cliente = filtrar_cliente(cpf, clientes)
 
     if not cliente:
         print("\033[31mCliente não encontrado!\033[m")
         return
     
-    valor = foat(input("Informe o valor do depósito: "))
+    valor = float(input("Informe o valor do depósito: "))
     transacao = Deposito(valor)
 
     conta = recuperar_conta_cliente(cliente)
@@ -248,4 +249,38 @@ def depositar(clientes):
     
     cliente.realizar_transacao(conta, transacao)
 
-#4:22
+
+def filtrar_cliente(cpf, clientes):
+    clientes_filtrados = [cliente for cliente in clientes if cliete.cpf == cpf]
+    return clientes_filtrados[0] if clientes_filtrados else None
+
+
+def recuperar_conta_cliente(cliente):
+    if not cliente.contas:
+        print("\033[31mCliente não possui conta!\033[m")
+        return
+
+    #FIXME #não permite cliente escolher a conta
+    return cliente.contas[0]
+
+
+def sacar(clientes):
+    cpf = input("Informe o CPF do cliente: ")
+    cliente = filtrar_cliente(cpf, clientes)
+
+    if not cliente:
+        print("\033[31mCliente não encontrado!\033[m")
+        return
+    
+    valor = float(input("Informe o valor dos aque: "))
+    transacao = Saque(valor)
+
+    conta = recuperar_conta_cliente(cliente)
+    if not conta:
+        return
+    
+    cliente.realizar_transacao(conta, transacao)
+
+
+def exibir_extrato():
+    cpf = input("Informe o CPF do cliente: ")
