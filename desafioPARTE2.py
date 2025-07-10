@@ -207,17 +207,17 @@ def main():
             depositar(clientes)
 
         elif opcao == 2:
-            saldo, extrato, numero_saques = sacar(saldo = saldo, extrato = extrato, limite = limite, numero_saques = numero_saques, limite_saques = LIMITE_SAQUES)
+            sacar(clientes)
 
         elif opcao == 3:
-            print(historico(saldo, extrato = extrato))
+            exibir_extrato(clientes)
 
         elif opcao == 4:
-            cadastrar_usuário(usuarios)
+            criar_cliente(clientes)
 
         elif opcao == 5:
             numero_conta = len(contas) + 1
-            conta = criar_conta(AGENCIA, numero_conta, usuarios)
+            conta = criar_conta(numero_conta, clientes, contas)
 
             if conta:
                 contas.append(conta)
@@ -282,5 +282,82 @@ def sacar(clientes):
     cliente.realizar_transacao(conta, transacao)
 
 
-def exibir_extrato():
+def exibir_extrato(clientes):
     cpf = input("Informe o CPF do cliente: ")
+    cliente = filtrar_cliente(cpf, clientes)
+
+    if not cliente:
+        print("\033[31mCliente não encontrado!\033[m")
+        return
+    
+    conta = recuperar_conta_cliente(cliente)
+    if not conta:
+        return
+    
+    print('''
+-------------------------
+         EXTRATO         
+-------------------------
+        ''')
+    transacoes = conta.historico.transacoes
+
+    extrato = ""
+    if not transacoes:
+        extrato = "Não fram realizadas movimentações"
+    else:
+        for transacao in transacoes:
+            extrato += f"\n{transacao['tipo']}:\n\tR$ {transacao['valor']:.2f}"
+    
+    print(extrato)
+    print(f"\nSaldo: \n\tR$ {conta.sald:.2f}")
+    print()
+    print(f"-"*25)
+
+
+def criar_cliente(clientes):
+    print('''
+--------------------------
+    CADASTRAR USUÁRIO         
+--------------------------
+        ''')
+    
+    cpf = input("Informe o CPF (somente número): ")
+    cliente = filtrar_cliente(cpf, clientes)
+
+    if cliente:
+        print(f"\033[31m\nO CPF nº {cpf} já cadastrado.\033[m")
+        return
+    
+    nome = input("Informe o nome completo: ")
+    data_nascimento = input("Informe a data de nascimento (dd-mm-aaaa): ")
+    endereco = input("Informe o endereço: ")
+
+    cliente= PessoaFisica(nome=nome, data_nascimento=data_nascimento, cpf=cpf, endereco=endereco)
+
+    clientes.append(cliente)
+
+    print("\n\033[32mUsuário cadastrado com sucesso.\033[m")
+
+
+def criar_conta(numero_conta, clientes, contas):
+    cpf = input("Informe o CPF dop cliente: ")
+    cliente = filtrar_cliente(cpf, clientes)
+
+    if not cliente:
+        print("\033[31mCliente não encontrado! Criação de conta encerrada.\033[m")
+        return
+    
+    conta = ContaCorrente.nova_conta(cliente=cliente, numero=numero_conta)
+    contas.append(conta)
+    clientes.contas.append(conta)
+
+
+    print("\033[32mConta criada com sucesso.\033[m")
+
+
+def listar_contas(contas):
+    for conta in contas:
+        print("=" * 100)
+        print(str(conta))
+
+main()
