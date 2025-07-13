@@ -151,7 +151,9 @@ class Historico():
         )
 
     def gerar_relatorio(self, tipo_transacao=None):
-        pass
+        for transacao in self._transacoes:
+            if tipo_transacao is None or transacao["tipo"].lower() == tipo_transacao.lower(): #o retorna todos os tipos de transacao ou aplica um filtro delas a serem retornadas
+                yield transacao
     
 
 class Transacao(ABC): #criando uma classe abstrata extendiad do ABC
@@ -252,6 +254,7 @@ def main():
         else:
             print("\nOpção inválida! Por favor selecione novamente a opção desejada.")
 
+
 @log_transacao
 def depositar(clientes):
     cpf = input("Informe o CPF do cliente: ")
@@ -326,12 +329,12 @@ def exibir_extrato(clientes):
     transacoes = conta.historico.transacoes
 
     extrato = ""
-    tem_transacao = False
-    for transacao in conta.historico.gerar_relatorio():
+    tem_transacao = False #criada para saber se alguma operação foi realizada ou nao.
+    for transacao in conta.historico.gerar_relatorio(tipo_transacao="saque"):
         tem_transacao = True
         extrato += f"\n{transacao['tipo']}:\n\t\tR$ {transacao['valor']:.2f}"
 
-    if not transacoes:
+    if not tem_transacao:
         extrato = "Não foram realizadas movimentações"
     
     print(extrato)
