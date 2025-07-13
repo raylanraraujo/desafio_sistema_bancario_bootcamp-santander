@@ -20,7 +20,7 @@ class ContasIterador:
             Saldo:\t\t{conta.saldo:.2f}
         """
         except IndexError:
-            StopIteration
+            raise StopIteration
         finally:
             self._index += 1
 
@@ -398,7 +398,7 @@ def criar_conta(numero_conta, clientes, contas):
 
 def listar_contas(contas):
     # TODO: alterar implementação, para utilizar a classe ContaIterador
-    for conta in ContasIterador:
+    for conta in ContasIterador(contas):
         print("=" * 100)
         print(textwrap.dedent(str(conta)))
 
