@@ -4,13 +4,25 @@ from datetime import datetime
 
 class ContaIterador:
     def __init__(self, contas):
-        pass
+        self.contas = contas
+        self._index = 0
 
     def __iter__(self):
-        pass
+        return self
 
     def __next__(self):
-        pass
+        try:
+            conta = self.contas[self._index]
+            return f"""\
+            Agência:\t{conta.agencia}
+            C/C:\t\t{conta.numero}
+            Titular:\t{conta.cliente.nome}
+            Saldo:\t\t{conta.saldo:.2f}
+        """
+        except IndexError:
+            StopIteration
+        finally:
+            self._index += 1
 
 
 class Cliente:
