@@ -334,7 +334,7 @@ def exibir_extrato(clientes):
             extrato += f"\n{transacao['tipo']}:\n\t\tR$ {transacao['valor']:.2f}"
     
     print(extrato)
-    print(f"\nSaldo: \n\t\ttR$ {conta.saldo:.2f}")
+    print(f"\nSaldo: \n\t\tR$ {conta.saldo:.2f}")
     print()
     print(f"-"*25)
 
@@ -371,7 +371,7 @@ def criar_conta(numero_conta, clientes, contas):
     cliente = filtrar_cliente(cpf, clientes)
 
     if not cliente:
-        print("\033[31mCliente não encontrado! Criação de conta encerrada.\033[m")
+        print("\n\033[31mCliente não encontrado! Criação de conta encerrada.\033[m")
         return
     
     conta = ContaCorrente.nova_conta(cliente=cliente, numero=numero_conta)
@@ -379,7 +379,7 @@ def criar_conta(numero_conta, clientes, contas):
     cliente.contas.append(conta)
 
 
-    print("\033[32mConta criada com sucesso.\033[m")
+    print("\n\033[32mConta criada com sucesso.\033[m")
 
 
 def listar_contas(contas):
