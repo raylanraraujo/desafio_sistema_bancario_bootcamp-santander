@@ -179,6 +179,8 @@ class Deposito(Transacao):
         if sucesso_trransacao:
             conta.historico.adicionar_transacao(self)
 
+def log_transacao(func):
+    pass
 
 def menu():
     menu = '''
@@ -260,7 +262,7 @@ def recuperar_conta_cliente(cliente):
     #FIXME #não permite cliente escolher a conta
     return cliente.contas[0]
 
-
+@log_transacao
 def sacar(clientes):
     cpf = input("Informe o CPF do cliente: ")
     cliente = filtrar_cliente(cpf, clientes)
@@ -278,7 +280,7 @@ def sacar(clientes):
     
     cliente.realizar_transacao(conta, transacao)
 
-
+@log_transacao
 def exibir_extrato(clientes):
     cpf = input("Informe o CPF do cliente: ")
     cliente = filtrar_cliente(cpf, clientes)
@@ -310,7 +312,7 @@ def exibir_extrato(clientes):
     print()
     print(f"-"*25)
 
-
+@log_transacao
 def criar_cliente(clientes):
     print('''
 --------------------------
@@ -335,7 +337,7 @@ def criar_cliente(clientes):
 
     print("\n\033[32mUsuário cadastrado com sucesso.\033[m")
 
-
+@log_transacao
 def criar_conta(numero_conta, clientes, contas):
     cpf = input("Informe o CPF do cliente: ")
     cliente = filtrar_cliente(cpf, clientes)
