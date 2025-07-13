@@ -152,7 +152,7 @@ class Historico():
 
     def gerar_relatorio(self, tipo_transacao=None):
         pass
-
+    
 
 class Transacao(ABC): #criando uma classe abstrata extendiad do ABC
     @property
@@ -193,8 +193,17 @@ class Deposito(Transacao):
         if sucesso_trransacao:
             conta.historico.adicionar_transacao(self)
 
+
 def log_transacao(func):
-    pass
+    #tem que exibir na tela a data e hora de cada transacao bem como o tipo
+    def envelope(*args, **kwargs):
+        resultado = func(*args, **kwargs)
+        print(f"\033[33m{datetime.now()}: {func.__name__.upper()}\033[m")
+        return resultado
+
+    return envelope
+
+
 
 def menu():
     menu = '''
@@ -244,7 +253,7 @@ def main():
         else:
             print("\nOpção inválida! Por favor selecione novamente a opção desejada.")
 
-
+@log_transacao
 def depositar(clientes):
     cpf = input("Informe o CPF do cliente: ")
     cliente = filtrar_cliente(cpf, clientes)
