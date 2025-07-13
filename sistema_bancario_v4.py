@@ -2,7 +2,7 @@ import textwrap
 from abc import ABC
 from datetime import datetime
 
-class ContaIterador:
+class ContasIterador:
     def __init__(self, contas):
         self.contas = contas
         self._index = 0
@@ -398,7 +398,7 @@ def criar_conta(numero_conta, clientes, contas):
 
 def listar_contas(contas):
     # TODO: alterar implementação, para utilizar a classe ContaIterador
-    for conta in contas:
+    for conta in ContasIterador:
         print("=" * 100)
         print(textwrap.dedent(str(conta)))
 
