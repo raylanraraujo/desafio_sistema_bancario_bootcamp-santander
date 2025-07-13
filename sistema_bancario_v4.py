@@ -17,7 +17,7 @@ class ContasIterador:
             Agência:\t{conta.agencia}
             C/C:\t\t{conta.numero}
             Titular:\t{conta.cliente.nome}
-            Saldo:\t\t{conta.saldo:.2f}
+            Saldo:\t\tR${conta.saldo:.2f}
         """
         except IndexError:
             raise StopIteration
