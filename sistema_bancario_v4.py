@@ -297,7 +297,7 @@ def sacar(clientes):
         print("\033[31mCliente não encontrado!\033[m")
         return
     
-    valor = float(input("Informe o valor dos aque: "))
+    valor = float(input("Informe o valor do saque: "))
     transacao = Saque(valor)
 
     conta = recuperar_conta_cliente(cliente)
@@ -326,8 +326,6 @@ def exibir_extrato(clientes):
 -------------------------
         ''')
     # TODO: atualizar a implementação para utilizar o gerador definido em Historico
-    transacoes = conta.historico.transacoes
-
     extrato = ""
     tem_transacao = False #criada para saber se alguma operação foi realizada ou nao.
     for transacao in conta.historico.gerar_relatorio(tipo_transacao="saque"):
