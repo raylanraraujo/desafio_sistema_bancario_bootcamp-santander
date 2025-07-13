@@ -204,7 +204,6 @@ def log_transacao(func):
     return envelope
 
 
-
 def menu():
     menu = '''
 
@@ -327,11 +326,13 @@ def exibir_extrato(clientes):
     transacoes = conta.historico.transacoes
 
     extrato = ""
+    tem_transacao = False
+    for transacao in conta.historico.gerar_relatorio():
+        tem_transacao = True
+        extrato += f"\n{transacao['tipo']}:\n\t\tR$ {transacao['valor']:.2f}"
+
     if not transacoes:
         extrato = "Não foram realizadas movimentações"
-    else:
-        for transacao in transacoes:
-            extrato += f"\n{transacao['tipo']}:\n\t\tR$ {transacao['valor']:.2f}"
     
     print(extrato)
     print(f"\nSaldo: \n\t\tR$ {conta.saldo:.2f}")
