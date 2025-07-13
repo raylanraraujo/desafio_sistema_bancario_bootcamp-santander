@@ -2,6 +2,17 @@ import textwrap
 from abc import ABC
 from datetime import datetime
 
+class ContaIterador:
+    def __init__(self, contas):
+        pass
+
+    def __iter__(self):
+        pass
+
+    def __next__(self):
+        pass
+
+
 class Cliente:
     def __init__(self, endereco):
         self._endenreco = endereco
@@ -139,6 +150,9 @@ class Historico():
             }
         )
 
+    def gerar_relatorio(self, tipo_transacao=None):
+        pass
+
 
 class Transacao(ABC): #criando uma classe abstrata extendiad do ABC
     @property
@@ -262,6 +276,7 @@ def recuperar_conta_cliente(cliente):
     #FIXME #não permite cliente escolher a conta
     return cliente.contas[0]
 
+
 @log_transacao
 def sacar(clientes):
     cpf = input("Informe o CPF do cliente: ")
@@ -279,6 +294,7 @@ def sacar(clientes):
         return
     
     cliente.realizar_transacao(conta, transacao)
+
 
 @log_transacao
 def exibir_extrato(clientes):
@@ -298,6 +314,7 @@ def exibir_extrato(clientes):
          EXTRATO         
 -------------------------
         ''')
+    # TODO: atualizar a implementação para utilizar o gerador definido em Historico
     transacoes = conta.historico.transacoes
 
     extrato = ""
@@ -311,6 +328,7 @@ def exibir_extrato(clientes):
     print(f"\nSaldo: \n\t\ttR$ {conta.saldo:.2f}")
     print()
     print(f"-"*25)
+
 
 @log_transacao
 def criar_cliente(clientes):
@@ -337,6 +355,7 @@ def criar_cliente(clientes):
 
     print("\n\033[32mUsuário cadastrado com sucesso.\033[m")
 
+
 @log_transacao
 def criar_conta(numero_conta, clientes, contas):
     cpf = input("Informe o CPF do cliente: ")
@@ -355,6 +374,7 @@ def criar_conta(numero_conta, clientes, contas):
 
 
 def listar_contas(contas):
+    # TODO: alterar implementação, para utilizar a classe ContaIterador
     for conta in contas:
         print("=" * 100)
         print(textwrap.dedent(str(conta)))
