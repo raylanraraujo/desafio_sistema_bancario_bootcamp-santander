@@ -171,12 +171,12 @@ class Historico():
             if tipo_transacao is None or transacao["tipo"].lower() == tipo_transacao.lower(): #o retorna todos os tipos de transacao ou aplica um filtro delas a serem retornadas
                 yield transacao
     
-    #TODO: filtrar todaas as trasacoes realizadas no dia
+    
     def transacoes_do_dia(self):
         data_atual = datetime.now(timezone.utc).date()
         transacoes = []
         for transacao in self._transacoes:
-            data_transacao = datetime.strptime(self._transacao["data"], "%d-%m-%Y  %H:%M:%S").date() #aqui eu converto a minha data que está em string para um objeto datetime e depois pego somente a data
+            data_transacao = datetime.strptime(transacao["data"], "%d-%m-%Y  %H:%M:%S").date() #aqui eu converto a minha data que está em string para um objeto datetime e depois pego somente a data
             if data_atual == data_transacao:
                 transacoes.append(transacao)
         return transacoes
@@ -355,7 +355,7 @@ def exibir_extrato(clientes):
     tem_transacao = False #criada para saber se alguma operação foi realizada ou nao.
     for transacao in conta.historico.gerar_relatorio(tipo_transacao=None):
         tem_transacao = True
-        extrato += f"\n{transacao['data']}\4n{transacao['tipo']}:\n\t\tR$ {transacao['valor']:.2f}"
+        extrato += f"\n{transacao['data']}\n{transacao['tipo']}:\n\t\tR$ {transacao['valor']:.2f}"
 
     if not tem_transacao:
         extrato = "Não foram realizadas movimentações"
