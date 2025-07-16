@@ -353,9 +353,9 @@ def exibir_extrato(clientes):
         ''')
     extrato = ""
     tem_transacao = False #criada para saber se alguma operação foi realizada ou nao.
-    for transacao in conta.historico.gerar_relatorio(tipo_transacao="saque"):
+    for transacao in conta.historico.gerar_relatorio(tipo_transacao=None):
         tem_transacao = True
-        extrato += f"\n{transacao['data']}\n{transacao['tipo']}:\n\t\tR$ {transacao['valor']:.2f}"
+        extrato += f"\n{transacao['data']}\4n{transacao['tipo']}:\n\t\tR$ {transacao['valor']:.2f}"
 
     if not tem_transacao:
         extrato = "Não foram realizadas movimentações"
