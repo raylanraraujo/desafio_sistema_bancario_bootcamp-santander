@@ -31,8 +31,10 @@ class Cliente:
         self.contas = []
 
     def realizar_transacao(self, conta, transacao):
-        #TODO: validar numero de transacoes e invalidar a operacao se for necessario
-        #print("\n@@@ Você excedeu o número de transacoes permitidas para hoje! @@@")
+        if len(conta.historico.transacoes_do_dia()) >= 2:
+            print("\n\033[31mVocê excedeu o número de transacoes permitidas para hoje!\033[m")
+            return
+        
         transacao.registrar(conta)
 
     def adicionar_conta(self, conta):
@@ -170,18 +172,16 @@ class Historico():
                 yield transacao
     
     #TODO: filtrar todaas as trasacoes realizadas no dia
-    def transacao_do_dia(self):
+    def transacoes_do_dia(self):
         data_atual = datetime.now(timezone.utc).date()
         transacoes = []
         for transacao in self._transacoes:
-            data_transacao = datetime.strptime(self._transacao["data"], "%d-%m-%Y  %H:%M:%S").date()
+            data_transacao = datetime.strptime(self._transacao["data"], "%d-%m-%Y  %H:%M:%S").date() #aqui eu converto a minha data que está em string para um objeto datetime e depois pego somente a data
             if data_atual == data_transacao:
                 transacoes.append(transacao)
         return transacoes
 
-
     
-
 class Transacao(ABC): #criando uma classe abstrata extendiad do ABC
     @property
     def valor(self):
