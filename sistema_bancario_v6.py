@@ -49,7 +49,7 @@ class PessoaFisica(Cliente): #classe extendida da classe Cliente
         self.data_nascimento = data_nascimento
 
     def __repr__(self)-> str:
-        return f"<Cliente: ({self.cpf})>"
+        return f"<{self.__class__.__name__}: ({self.cpf})>"
 
 
 class Conta:
@@ -143,6 +143,9 @@ class ContaCorrente(Conta): #tem tudo que a conta mae tem + o limite
             return super().sacar(valor)
         
         return False
+
+    def __repr__(self):
+        return f"<{self.__class__.__name__}: ('{self.agencia}', '{self.numero}',  '{self.cliente.name}')>"
 
     def __str__(self):
         return f"""\
