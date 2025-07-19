@@ -232,7 +232,8 @@ def log_transacao(func):
     #tem que exibir na tela a data e hora de cada transacao bem como o tipo
     def envelope(*args, **kwargs):
         resultado = func(*args, **kwargs)
-        print(f"\033[33m{datetime.now()}: {func.__name__.upper()}\033[m")
+        data_hora = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        print(f"\033[33m{data_hora}: {func.__name__.upper()}\033[m")
         return resultado
 
     return envelope
