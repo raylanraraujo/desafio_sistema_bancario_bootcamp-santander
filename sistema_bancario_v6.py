@@ -232,8 +232,13 @@ def log_transacao(func):
     #tem que exibir na tela a data e hora de cada transacao bem como o tipo
     def envelope(*args, **kwargs):
         resultado = func(*args, **kwargs)
-        data_hora = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        print(f"\033[33m{data_hora}: {func.__name__.upper()}\033[m")
+        data_hora = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+        with open("log.txt", "a") as arquivo:
+            arquivo.write(
+                f"[{data_hora}] Função '{func.__name__}' executada com argumentos {args} e {kwargs}. "
+                f"Retornou {resultado}\n"
+            )
         return resultado
 
     return envelope
