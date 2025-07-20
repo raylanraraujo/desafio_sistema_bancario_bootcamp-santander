@@ -1,6 +1,9 @@
 import textwrap
 from abc import ABC
 from datetime import datetime, timezone
+from pathlib import Path
+
+ROOT_PATH = Path(__file__).parent
 
 class ContasIterador:
     def __init__(self, contas):
