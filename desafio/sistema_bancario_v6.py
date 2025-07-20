@@ -148,7 +148,7 @@ class ContaCorrente(Conta): #tem tudo que a conta mae tem + o limite
         return False
 
     def __repr__(self):
-        return f"<{self.__class__.__name__}: ('{self.agencia}', '{self.numero}',  '{self.cliente.name}')>"
+        return f"<{self.__class__.__name__}: ('{self.agencia}', '{self.numero}',  '{self.cliente.nome}')>"
 
     def __str__(self):
         return f"""\
@@ -237,7 +237,7 @@ def log_transacao(func):
         resultado = func(*args, **kwargs)
         data_hora = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-        with open("log.txt", "a") as arquivo:
+        with open(ROOT_PATH / "log.txt", "a") as arquivo:
             arquivo.write(
                 f"[{data_hora}] Função '{func.__name__}' executada com argumentos {args} e {kwargs}. "
                 f"Retornou {resultado}\n"
